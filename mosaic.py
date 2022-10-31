@@ -3,6 +3,7 @@ import logging
 
 from dimming_direction import DimmingDirection
 from image_dimmer import ImageDimmer
+from image_grayscale_colorizer import ImageGrayscaleColorizer
 from image_stitcher import ImageStitcher
 from tiling_image import TilingImage
 from utils import converters
@@ -21,15 +22,25 @@ def __parse_args():
                         dest='source_image',
                         required=True)
     parser.add_argument('--width',
-                        help='unique ID of a person',
+                        help='The width of resulting image',
                         type=converters.string_to_int,
                         dest='width',
                         required=True)
     parser.add_argument('--height',
-                        help='unique ID of a person',
+                        help='The height of resulting image',
                         type=converters.string_to_int,
                         dest='height',
                         required=True)
+    parser.add_argument('--white_to',
+                        help='A color to replace white color',
+                        type=str,
+                        dest='white_to',
+                        required=False)
+    parser.add_argument('--black_to',
+                        help='A color to replace black color',
+                        type=str,
+                        dest='black_to',
+                        required=False)
     parser.add_argument('--dim',
                         help='Dimming strength',
                         type=converters.string_to_float,
@@ -65,6 +76,14 @@ def main():
     mosaic_name = image_stitcher.to_stitched_name()
     mosaic.save(mosaic_name)
     logger.log(f"Mosaic {mosaic_name} has been saved")
+
+    if arguments.white_to or arguments.black_to:
+        image_grayscale_colorizer = ImageGrayscaleColorizer(image=mosaic, path=mosaic_name, white_to=arguments.white_to,
+                                                            black_to=arguments.black_to)
+        colorized_image = image_grayscale_colorizer.colorize()
+        colorized_name = image_grayscale_colorizer.to_colorized_name()
+        colorized_image.save(colorized_name)
+        logger.log(f"Colorized image {colorized_name} has been saved")
 
     if arguments.dimming_strength:
         if arguments.dimming_strength < 0.0 or arguments.dimming_strength > 1.0:
