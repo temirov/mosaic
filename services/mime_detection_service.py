@@ -1,7 +1,7 @@
 import subprocess
 from pathlib import Path
 
-from magic import magic
+import magic
 
 
 class MimeDetectionService:
