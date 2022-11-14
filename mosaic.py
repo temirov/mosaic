@@ -15,7 +15,7 @@ from utils.path_utils import PathUtils
 
 def __parse_args():
     usage = """
-        %(prog)s --source <TILING_IMAGE> --width <UNIQUE_ID_OF_A_PERSON> --height <GLOB> --dim <DIMMING_STRENGTH> --log <WARN|INFO|DEBUG>
+        %(prog)s --source <SOURCE_IMAGE> --width <RESULT_WIDTH> --height <RESULT_HEIGHT> --dim <DIMMING_STRENGTH> --dimming_direction <DIRECTION_OF_DIMMING> --log <WARN|INFO|DEBUG>
         """
     parser = argparse.ArgumentParser(description='Face extractor', usage=usage)
     parser.add_argument('--source',
